@@ -20,8 +20,69 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
 <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker build -t hello-world .
 [sudo] пароль для admin1:
 unable to prepare context: unable to evaluate symlinks in Dockerfile path: lstat /home/admin1/work/Education/Docker/EducateDocker/Dockerfile: no such file or directory
-<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$
-
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker build -t hello-world .
+[sudo] пароль для admin1:
+Sending build context to Docker daemon  114.2kB
+Step 1/5 : FROM python:3.6
+3.6: Pulling from library/python
+50e431f79093: Pull complete
+dd8c6d374ea5: Pull complete
+c85513200d84: Pull complete
+55769680e827: Pull complete
+f5e195d50b88: Pull complete
+bcd75869ea17: Pull complete
+f02a073bb16c: Pull complete
+d317a9591eb3: Pull complete
+579334b3a1fd: Pull complete
+Digest: sha256:0b6aeeb47c4a5e0051bb41c7a7f300b69e68af873081f8f2f7fbcd8d5c47e264
+Status: Downloaded newer image for python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/5 : RUN mkdir -p /usr/src/app/
+ ---&gt; Running in 23275ff5b129
+Removing intermediate container 23275ff5b129
+ ---&gt; 6cb89215e9cd
+Step 3/5 : WORKDIR /usr/src/app/
+ ---&gt; Running in 9fb8ebb4a713
+Removing intermediate container 9fb8ebb4a713
+ ---&gt; 0b2f81f3ae24
+Step 4/5 : COPY . /usr/src/app/
+ ---&gt; fd5bce5802e1
+Step 5/5 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in 9521b98b28b0
+Removing intermediate container 9521b98b28b0
+ ---&gt; 3d1be4c548b1
+Successfully built 3d1be4c548b1
+Successfully tagged hello-world:latest
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker images
+[sudo] пароль для admin1:
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+hello-world         latest              3d1be4c548b1        13 minutes ago      914MB
+python              3.6                 1daf62e8cab5        12 days ago         914MB
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker run hello-world
+Hello, world!
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+ec3dc4f9af26        hello-world         &quot;python app.py&quot;     11 minutes ago      Exited (0) 11 minutes ago                       elegant_haslett
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker run --name hello hello-world
+Hello, world!
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+1c17b92520ac        hello-world         &quot;python app.py&quot;     34 seconds ago      Exited (0) 32 seconds ago                       hello
+ec3dc4f9af26        hello-world         &quot;python app.py&quot;     21 minutes ago      Exited (0) 21 minutes ago                       elegant_haslett
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker rm 1c17b92520ac
+[sudo] пароль для admin1:
+1c17b92520ac
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+ec3dc4f9af26        hello-world         &quot;python app.py&quot;     39 minutes ago      Exited (0) 39 minutes ago                       elegant_haslett
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a -q
+ec3dc4f9af26
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker rm $(sudo docker ps -qa)
+ec3dc4f9af26
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 </pre>
 </body>
 </html>

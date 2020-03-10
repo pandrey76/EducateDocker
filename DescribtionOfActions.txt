@@ -131,3 +131,119 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
             CMD ["python", "app.py"]
 
 
+Теперь пытаемся собрать свой образ:
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker build -t hello-world .
+    [sudo] пароль для admin1:
+
+    Сейчас наблюдаем загрузку базового образа, который мы выбрали Python: 3.6, т.е. Docker посмотрел, что мы начинаем
+сборку с образа Python 3.6, но локально такого образа нет, тогда Docker пошёл в Docker hub, посмотрел есть ли там такой
+образ, нашёл его и начал его скачивать.
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker build -t hello-world .
+    [sudo] пароль для admin1:
+    Sending build context to Docker daemon  114.2kB
+    Step 1/5 : FROM python:3.6
+    3.6: Pulling from library/python
+    50e431f79093: Pull complete
+    dd8c6d374ea5: Pull complete
+    c85513200d84: Pull complete
+    55769680e827: Pull complete
+    f5e195d50b88: Pull complete
+    bcd75869ea17: Pull complete
+    f02a073bb16c: Pull complete
+    d317a9591eb3: Pull complete
+    579334b3a1fd: Pull complete
+    Digest: sha256:0b6aeeb47c4a5e0051bb41c7a7f300b69e68af873081f8f2f7fbcd8d5c47e264
+    Status: Downloaded newer image for python:3.6
+    ---> 1daf62e8cab5
+    Step 2/5 : RUN mkdir -p /usr/src/app/
+    ---> Running in 23275ff5b129
+    Removing intermediate container 23275ff5b129
+    ---> 6cb89215e9cd
+    Step 3/5 : WORKDIR /usr/src/app/
+    ---> Running in 9fb8ebb4a713
+    Removing intermediate container 9fb8ebb4a713
+    ---> 0b2f81f3ae24
+    Step 4/5 : COPY . /usr/src/app/
+    ---> fd5bce5802e1
+    Step 5/5 : CMD ["python", "app.py"]
+    ---> Running in 9521b98b28b0
+    Removing intermediate container 9521b98b28b0
+    ---> 3d1be4c548b1
+    Successfully built 3d1be4c548b1
+    Successfully tagged hello-world:latest
+
+    Мы сдесь наблюдаем много различных слоёв, сам базовый образ Python 3.6, состаит из 9 слёв (Образ Ubuntu,
+apt install python и т.д.). Каждая команда в Dockerfile создаёт свой слой, поверх базовых слоёв образа Python 3.6.
+
+    Теперь посмотрим какие образы есть в систнме:
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker images
+    [sudo] пароль для admin1:
+    REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+    hello-world         latest              3d1be4c548b1        13 minutes ago      914MB
+    python              3.6                 1daf62e8cab5        12 days ago         914MB
+
+    Мы видим, что у нас есть два образа python 3.6 и hello-world. IMAGE ID - это контрольная сумма образа sha256.
+
+    Теперь запускаем наш образ:
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker run hello-world
+    Hello, world!
+
+    Мы видим, что контейнер запустился и выполнился, наше приложение корректно отработало. Контейнер работает до тех
+пор пока работает приложение.
+
+    Выполним команду:
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+    Мы видим, что у нас нет контейнеров, дело в том, что контейнер уже отработал и остановился, т.к. у нас очень
+простое приложение, только вывести Hello, world!, но он не исчез, поэтому, чтобы посмотреть все контейнеры, даже
+которые уже остановились надо выполнить команду:
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+    ec3dc4f9af26        hello-world         "python app.py"     11 minutes ago      Exited (0) 11 minutes ago                       elegant_haslett
+
+    Видим идентификатор контейнера, его sha256 (CONTAINER ID), из образа с именем 'hello-world' (IMAGE), команда "python app.py"
+(COMMAND), статус выполненные с кодом возврата "0" (STATUS) всё хорошо у нас отработало.
+    Имя у нашего контейнера "elegant_haslett", если мы сами не указываем имя контейнера при его запуске, то Docker
+сам выбирает ему имя. Мы можем задать своё имя:
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker run --name hello hello-world
+    Hello, world!
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+    1c17b92520ac        hello-world         "python app.py"     34 seconds ago      Exited (0) 32 seconds ago                       hello
+    ec3dc4f9af26        hello-world         "python app.py"     21 minutes ago      Exited (0) 21 minutes ago                       elegant_haslett
+
+    Здесь мы видим, что у нас уже в системе есть два контейнера, второй который мы только, что создали.
+    Как нам теперь удалить контейнеры с помощью команды "docker rm" в качестве параметра можно передать или
+идентификатор контейнера (CONTAINER ID) или имя (NAMES).
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker rm 1c17b92520ac
+    1c17b92520ac
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                      PORTS               NAMES
+    ec3dc4f9af26        hello-world         "python app.py"     39 minutes ago      Exited (0) 39 minutes ago                       elegant_haslett
+
+    Мы видим, что один контейнер был удалён из системы, а если у нас этих контейнеров 50, то будет не очень удобно их
+по одному в ручную останавливать (удалять). Для этого, Мы можем добавить ещё одну команду в "docker ps" "-q", которая
+выводит только (CONTAINER ID).
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a -q
+    ec3dc4f9af26
+
+    Теперь вывод этой команды мы можем передать команде "docker rm"
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker rm $(sudo docker ps -qa)
+    ec3dc4f9af26
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a
+    CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+    Мы видим, что мы удалили из ситсемы все контейнеры.
+
+
+
