@@ -83,6 +83,50 @@ ec3dc4f9af26
 ec3dc4f9af26
 <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
 CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+e<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker build -t hello-world .
+[sudo] пароль для admin1:
+Sending build context to Docker daemon  142.8kB
+Step 1/5 : FROM python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/5 : RUN mkdir -p /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 6cb89215e9cd
+Step 3/5 : WORKDIR /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 0b2f81f3ae24
+Step 4/5 : COPY . /usr/src/app/
+ ---&gt; 4709754f91a6
+Step 5/5 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in 90b705195ae2
+Removing intermediate container 90b705195ae2
+ ---&gt; ea3e8c3f2f44
+Successfully built ea3e8c3f2f44
+Successfully tagged hello-world:latest
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker run --name hello -d hello-world
+d0e254c23304c7b97bf9d61b79fd6788b30aeafb13ed9d63b77adad7faaf9a6a
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+d0e254c23304        hello-world         &quot;python app.py&quot;     45 seconds ago      Up 44 seconds                           hello
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker stop hello
+hello
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+d0e254c23304        hello-world         &quot;python app.py&quot;     6 minutes ago       Exited (137) 51 seconds ago                       hello
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker rm hello
+hello
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker run --name hello -d --rm hello-world
+602fe94114a97b5640795f211ef27f78dbb9806009aac341e0b4201a471dee9b
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+602fe94114a9        hello-world         &quot;python app.py&quot;     3 minutes ago       Up 3 minutes                            hello
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker stop hello
+ hello
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$  sudo docker ps
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
 </pre>
 </body>
 </html>

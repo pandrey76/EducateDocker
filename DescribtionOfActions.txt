@@ -92,6 +92,10 @@ CONTAINER ID        IMAGE               COMMAND             CREATED             
         admin1@ubuntu18:~/work/Education/Docker$ cd EducateDocker
         admin1@ubuntu18:~/work/Education/Docker/EducateDocker$
 
+Ссоздаём приложения (скрипта) "app.py", следующего содержания:
+
+    print("Hello, world!")
+
 Пытаемся собрать свой образ с запуском приложения (скрипта) "app.py".
 
     sudo docker build -t hello-world
@@ -245,5 +249,92 @@ apt install python и т.д.). Каждая команда в Dockerfile соз�
 
     Мы видим, что мы удалили из ситсемы все контейнеры.
 
+    Теперь отредактируем файл app.py:
+
+        import time
+        while True:
+            print("Hello, world!")
+            # Задержка на 1 секутду
+            time.sleep(1)
+
+    Собираем наш новый образ:
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker build -t hello-world .
+        [sudo] пароль для admin1:
+        Sending build context to Docker daemon  142.8kB
+        Step 1/5 : FROM python:3.6
+        ---> 1daf62e8cab5
+        Step 2/5 : RUN mkdir -p /usr/src/app/
+        ---> Using cache
+        ---> 6cb89215e9cd
+        Step 3/5 : WORKDIR /usr/src/app/
+        ---> Using cache
+        ---> 0b2f81f3ae24
+        Step 4/5 : COPY . /usr/src/app/
+        ---> 4709754f91a6
+        Step 5/5 : CMD ["python", "app.py"]
+        ---> Running in 90b705195ae2
+        Removing intermediate container 90b705195ae2
+        ---> ea3e8c3f2f44
+        Successfully built ea3e8c3f2f44
+        Successfully tagged hello-world:latest
+
+    Здесь мы видим, что скачивание базового образа (python 3.6) не происходит, он берётся из локального хранилища.
+Если мы сейчас запустим контейнер (sudo docker run --name hello hello-world), то ткрминал у нас будет занят, т.к.
+наше приложение выполняется в бесконечном цикле, мы не сможем выполнять другие команды в терминале. Для  того чтобы
+запустить контейнер в фоне есть параметр "-d". При использовании этого параметра контейнер запустится в фоне, в
+нашем случае бесконечный вывод сообщения "Hello, world!":
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker run --name hello -d hello-world
+        d0e254c23304c7b97bf9d61b79fd6788b30aeafb13ed9d63b77adad7faaf9a6a
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+        d0e254c23304        hello-world         "python app.py"     45 seconds ago      Up 44 seconds                           hello
+
+    Мы видим, что у нас один контейнер в статусе запушен (Up) 44 секунды назад с именем hello. Мы можем этот контейнер
+остановить, командой "stop" передав или Имя контейнера или его Идентификатор контейнера, не Имя образа!!!:
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker stop hello
+        hello
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+    Мы видим, что никаких контейнеров нет.
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS                        PORTS               NAMES
+        d0e254c23304        hello-world         "python app.py"     6 minutes ago       Exited (137) 51 seconds ago                       hello
+
+    Список всех контейнеров, и наш ко статусов завершён (Exited) 51 секунду назад. Код возврата не "0", а 137, т.к.
+мы принудительно остановили контейнер.
+    Теперь удалим наш контейнер:
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker rm hello
+        hello
+    А если нам нужно сделать так, чтобы контейнер, после того как он отработает или мы его завершим, сам удалился,
+чтобы не выполнять самим дополнительные команды в терминале (sudo docker rm hello и т.д.) необходимо добавить
+команду "--rm". Теперь получается после того как котейнер либо отработает, либо мы его остановим он сам удалится:
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker run --name hello -d --rm hello-world
+        602fe94114a97b5640795f211ef27f78dbb9806009aac341e0b4201a471dee9b
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+        602fe94114a9        hello-world         "python app.py"     3 minutes ago       Up 3 minutes                            hello
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker stop hello
+        hello
+
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$  sudo docker ps
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+        admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ sudo docker ps -a
+        CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+    Мы видим, что в системе нет никаких контейнеров.
+
+    Подитожим, у нас есть Docker образы, на базе которых создаются контейнеры. Для того, чтобы создать свой
+собсвенный Docker образ нам нужно прописать в Dockerfile все необходимые команды, в каждом конкретном случае это будут
+какие-то свои, определённые команды. Далее необходимо выполнить команду "docker build" и далее "docker run".
 
 
