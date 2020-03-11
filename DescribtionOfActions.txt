@@ -407,4 +407,32 @@ apt install python и т.д.). Каждая команда в Dockerfile соз�
 
             This is string... - 11.03.2020 17:37:57
 
-     И
+     Меняем "payload": "This is string..." в файле "response.json" на "payload": "hello, world!" и в браузере получаем:
+
+            Hello, world! - 11.03.2020 17:45:14
+
+    Далее будем упаковывать это Web приложение в Docker образ. Для его работы нам необходимы зависимости, а имено Flask,
+данная зависимость устанавливается с помощью утилиты pip
+        pip install flask
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ pip install flask
+            Collecting flask
+                Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+                    |████████████████████████████████| 94 kB 362 kB/s
+            Collecting Jinja2>=2.10.1
+                Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+                    |████████████████████████████████| 126 kB 803 kB/s
+            Collecting itsdangerous>=0.24
+                Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+            Collecting Werkzeug>=0.15
+                Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+                    |████████████████████████████████| 298 kB 402 kB/s
+            Collecting click>=5.1
+                Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+                    |████████████████████████████████| 82 kB 558 kB/s
+            Collecting MarkupSafe>=0.23
+            Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+            Installing collected packages: MarkupSafe, Jinja2, itsdangerous, Werkzeug, click, flask
+            Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+
+
