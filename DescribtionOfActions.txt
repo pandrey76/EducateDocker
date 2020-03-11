@@ -338,3 +338,73 @@ apt install python и т.д.). Каждая команда в Dockerfile соз�
 какие-то свои, определённые команды. Далее необходимо выполнить команду "docker build" и далее "docker run".
 
 
+************************************************************************************************************************
+        Web приложения.
+************************************************************************************************************************
+
+       Папка Web-hello-world.
+
+      Файл app.py
+************************************************************************************************************************
+
+        import os
+        import json
+        import datetime
+        from flask import Flask
+
+        app = Flask(__name__)
+
+        BASE_FOLDER = os.path.dirname(os.path.abspath(__file__))
+        RESOURCE_DIR = os.path.join(BASE_FOLDER, "resources")
+
+        # когда мы в браузере открываем страницу, то у нас открывается файл "response.json" и от туда достаётся содержимое
+        # поля "payload", добавляется дата текущая и как строка возвращается пользователю.
+
+        @app.route('/')
+        def hello_world():
+            with open(os.path.join(RESOURCE_DIR, "response.json")) as f:
+                return "%s - %s" % (json.loads(f.read()).get("payload"), datetime.datetime.now().strftime("%d.%m.%Y %H:%M:%S"))
+
+
+        if __name__ == "__main__":
+            app.run(host="0.0.0.0", port=8080, debug=True)
+
+************************************************************************************************************************
+
+       Папка Web-hello-world/resources.
+
+      Файл response.json
+************************************************************************************************************************
+
+{
+    "payload": "This is string..."
+}
+
+************************************************************************************************************************
+
+    Настраиваем виртуальное окружение.
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ cd Web-hello-world
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ virtualenv WebHelloWorldEnv
+        Using base prefix '/usr'
+        New python executable in /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/WebHelloWorldEnv/bin/python3
+        Also creating executable in /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/WebHelloWorldEnv/bin/python
+        Installing setuptools, pip, wheel...
+        done.
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ cd WebHelloWorldEnv
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/WebHelloWorldEnv$ cd bin
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/WebHelloWorldEnv/bin$ . activate
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/WebHelloWorldEnv/bin$
+
+    Запускаем app.py:
+
+        /usr/bin/python3.6 /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/app.py
+        * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+        * Restarting with stat
+        * Debugger is active!
+        * Debugger PIN: 533-910-208
+
+     В браузере вводим строку "http://0.0.0.0:8080/" И видим параметр "payload" из файла "response.json" и текущую дату:
+
+            This is string... - 11.03.2020 17:37:57
+
+     И
