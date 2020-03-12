@@ -427,6 +427,33 @@ Successfully tagged web-hello:latest
  * Debugger is active!
  * Debugger PIN: 333-723-173
 172.17.0.1 - - [12/Mar/2020 11:46:52] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
+^C(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+web-hello           latest              e30856fec156        28 minutes ago      942MB
+&lt;none&gt;              &lt;none&gt;              9502954f1619        About an hour ago   942MB
+&lt;none&gt;              &lt;none&gt;              3ca627a1e437        2 hours ago         942MB
+hello-world         latest              7646c5da0c70        20 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        20 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              3d1be4c548b1        2 days ago          914MB
+python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ ls
+app.py  Dockerfile  requirements.txt  <font color="#729FCF"><b>resources</b></font>  <font color="#729FCF"><b>WebHelloWorldEnv</b></font>
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ cd resources
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ pwd
+/home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/resources
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ sudo docker run --rm --name web -p 8080:8080 -e TZ=Europe/Moscow -v /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/resources:/usr/src/app/resources web-hello
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 283-111-709
+172.17.0.1 - - [12/Mar/2020 12:18:17] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
 </pre>
 </body>
 </html>
