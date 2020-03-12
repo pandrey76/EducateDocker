@@ -877,3 +877,61 @@ response.json
 контейнеру. Мы просто указываем Volume примонтируйся вот по этому пути и всё что по этому пути в контейнере сохраняется,
 оно по сути попадает в Volume, поэтому когда мы останавливаем или удаляем контейнер с данными ничего не происходит,
 мы также можем взять этот Volume и привязать его уже к другому контейнеру.
+
+        Ещё один пример применение Docker в разработке.
+
+    Допустим у меня есть приложение, которое должно работать с СУБД и нам нужно временно развернуть эту СУБД, чтобы
+протестировав, что-то удалить её.
+
+    ^C(WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ cd ../
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ cd ../
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ ls
+        DescribtionOfActions.txt  Docker-mongo-example  Hello-world  README.md  Terminal.html  Web-hello-world
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ cd ^C
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker$ cd Docker-mongo-example
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ deactivate
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ virtualenv DockerMongoExampleEnv
+        Using base prefix '/usr'
+        New python executable in /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin/python3
+        Also creating executable in /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin/python
+        Installing setuptools, pip, wheel...
+        done.
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ cd DockerMongoExampleEnv
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv$ cd bin
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin$ . activate
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin$ cd ../
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv$ cd ../
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ pip install pymongo
+        Collecting pymongo
+            Downloading pymongo-3.10.1-cp36-cp36m-manylinux2014_x86_64.whl (460 kB)
+                |████████████████████████████████| 460 kB 185 kB/s
+        Installing collected packages: pymongo
+        Successfully installed pymongo-3.10.1
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ deactivate
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ pip install pymongo
+
+        Command 'pip' not found, but can be installed with:
+
+        sudo apt install python-pip
+
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ pip3 install pymongo
+        Collecting pymongo
+        Cache entry deserialization failed, entry ignored
+        Downloading https://files.pythonhosted.org/packages/49/01/1da7d3709ea54b3b4623c32d521fb263da14822c7d9064d7fd9eeb0b492c/pymongo-3.10.1-cp36-cp36m-manylinux1_x86_64.whl (450kB)
+            100% |████████████████████████████████| 460kB 199kB/s
+        Installing collected packages: pymongo
+        Successfully installed pymongo-3.10.1
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ cd DockerMongoExampleEnv
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv$ cd bin
+    admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin$ . activate
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin$ cd ../
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv$ cd ../
+
+        Добавляем приложение "Docker-mongo-example".
+
+        Теперь запускаем контейнер с Mongo, временный который нужен только для тестирования. MongoClient поднимается на
+localhost на порту 27017.
+
+
+
+

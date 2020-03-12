@@ -472,6 +472,58 @@ local               web
  * Debugger is active!
  * Debugger PIN: 152-430-171
 172.17.0.1 - - [12/Mar/2020 15:10:43] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
+^C(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ cd ../
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ cd ../
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ ls
+DescribtionOfActions.txt  <font color="#729FCF"><b>Docker-mongo-example</b></font>  <font color="#729FCF"><b>Hello-world</b></font>  README.md  Terminal.html  <font color="#729FCF"><b>Web-hello-world</b></font>
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker</b></font>$ cd Docker-mongo-example
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ deactivate
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ virtualenv DockerMongoExampleEnv
+Using base prefix &apos;/usr&apos;
+New python executable in /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin/python3
+Also creating executable in /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin/python
+Installing setuptools, pip, wheel...
+done.
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ cd DockerMongoExampleEnv
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv</b></font>$ cd bin
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin</b></font>$ . activate
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin</b></font>$ cd ../
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv</b></font>$ cd ../
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ pip install pymongo
+Collecting pymongo
+  Downloading pymongo-3.10.1-cp36-cp36m-manylinux2014_x86_64.whl (460 kB)
+     |████████████████████████████████| 460 kB 185 kB/s
+Installing collected packages: pymongo
+Successfully installed pymongo-3.10.1
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ deactivate
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ pip install pymongo
+
+Command &apos;pip&apos; not found, but can be installed with:
+
+sudo apt install python-pip
+
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ pip3 install pymongo
+Collecting pymongo
+<font color="#C4A000">  Cache entry deserialization failed, entry ignored</font>
+  Downloading https://files.pythonhosted.org/packages/49/01/1da7d3709ea54b3b4623c32d521fb263da14822c7d9064d7fd9eeb0b492c/pymongo-3.10.1-cp36-cp36m-manylinux1_x86_64.whl (450kB)
+    100% |████████████████████████████████| 460kB 199kB/s
+Installing collected packages: pymongo
+Successfully installed pymongo-3.10.1
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ cd DockerMongoExampleEnv
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv</b></font>$ cd bin
+<font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin</b></font>$ . activate
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv/bin</b></font>$ cd ../
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example/DockerMongoExampleEnv</b></font>$ cd ../
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ sudo docker images
+[sudo] пароль для admin1:
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+web-hello           latest              e30856fec156        6 hours ago         942MB
+&lt;none&gt;              &lt;none&gt;              9502954f1619        6 hours ago         942MB
+&lt;none&gt;              &lt;none&gt;              3ca627a1e437        7 hours ago         942MB
+hello-world         latest              7646c5da0c70        25 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        26 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              3d1be4c548b1        2 days ago          914MB
+python              3.6                 1daf62e8cab5        2 weeks ago         914MB
 </pre>
 </body>
 </html>
