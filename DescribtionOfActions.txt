@@ -436,3 +436,288 @@ apt install python и т.д.). Каждая команда в Dockerfile соз�
             Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
 
 
+    Если у нас больше зависимостей, то по в проекте необходимо создать файл "requirements.txt" и туда уже внести
+зависимости, для каждогог конкретного проекта можно указать конкретную версию. Например;
+                        flask == 1.1.1.1
+    Для установки всех зависимостей из файла:
+                        pip install -r requirements.txt
+
+    Собираем образ:
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker build -t web-hello .
+            [sudo] пароль для admin1:
+            Sending build context to Docker daemon  20.74MB
+            Step 1/6 : FROM python:3.6
+                ---> 1daf62e8cab5
+            Step 2/6 : RUN mkdir -p /usr/src/app/
+                ---> Using cache
+                ---> 6cb89215e9cd
+            Step 3/6 : WORKDIR /usr/src/app/
+                 ---> Using cache
+                ---> 0b2f81f3ae24
+            Step 4/6 : COPY . /usr/src/app/
+                ---> 16d5e4eddb09
+            Step 5/6 : RUN pip install --no-cache-dir -r requirements.txt
+                ---> Running in c6313f82e1fb
+            Removing intermediate container c6313f82e1fb
+                ---> 331927c54465
+            Step 6/6 : CMD ["python", "app.py"]
+                ---> Running in 5d7463af03cd
+            Removing intermediate container 5d7463af03cd
+                ---> 72bcbfb6fa2c
+            Successfully built 72bcbfb6fa2c
+            Successfully tagged web-hello:latest
+
+    Смотрим образы:
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            web-hello           latest              72bcbfb6fa2c        4 minutes ago       939MB
+            hello-world         latest              7646c5da0c70        18 hours ago        914MB
+            <none>              <none>              ea3e8c3f2f44        18 hours ago        914MB
+            <none>              <none>              3d1be4c548b1        2 days ago          914MB
+            python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+
+
+    Т.к мы забыли отредактировать файл "requirements.txt", удаляем образ "web-hello":
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker images -a
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            web-hello           latest              72bcbfb6fa2c        9 minutes ago       939MB
+            <none>              <none>              331927c54465        9 minutes ago       939MB
+            <none>              <none>              16d5e4eddb09        9 minutes ago       933MB
+            hello-world         latest              7646c5da0c70        18 hours ago        914MB
+            <none>              <none>              fc53ebf6c113        18 hours ago        914MB
+            <none>              <none>              ea3e8c3f2f44        18 hours ago        914MB
+            <none>              <none>              4709754f91a6        18 hours ago        914MB
+            <none>              <none>              3d1be4c548b1        2 days ago          914MB
+            <none>              <none>              fd5bce5802e1        2 days ago          914MB
+            <none>              <none>              0b2f81f3ae24        2 days ago          914MB
+            <none>              <none>              6cb89215e9cd        2 days ago          914MB
+            python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker rmi 72bcbfb6fa2c
+            Untagged: web-hello:latest
+                Deleted: sha256:72bcbfb6fa2c7642fdb60fe06196b1059f973438c3a723a8f19c1b6b8bb89631
+                Deleted: sha256:331927c544655e6efd9f79ddfc7e81ce31ebbc7ee2e493ccd5634d47dfe9d82e
+                Deleted: sha256:5e3bf44e412deeab36903220afd9361138f15bbd5024c02939c5a18fca8cc654
+                Deleted: sha256:16d5e4eddb093ca86d715d5e0ceb7b825b489038db068066b5f8fb2855a17802
+                Deleted: sha256:fd87ed78b4d2c60d5ab67a55904e53bbf9e92cc0ec0631d7f59b4b3ee79a1d11
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker images
+            REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+            hello-world         latest              7646c5da0c70        18 hours ago        914MB
+            <none>              <none>              ea3e8c3f2f44        18 hours ago        914MB
+            <none>              <none>              3d1be4c548b1        2 days ago          914MB
+            python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+
+    Редактируем файл "requirements.txt":
+        flask==1.1.1
+
+    Собираем образ:
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker build -t web-hello .
+            Sending build context to Docker daemon  20.74MB
+            Step 1/6 : FROM python:3.6
+                ---> 1daf62e8cab5
+            Step 2/6 : RUN mkdir -p /usr/src/app/
+                ---> Using cache
+                ---> 6cb89215e9cd
+            Step 3/6 : WORKDIR /usr/src/app/
+                ---> Using cache
+                ---> 0b2f81f3ae24
+            Step 4/6 : COPY . /usr/src/app/
+                ---> 53854985f8db
+            Step 5/6 : RUN pip install --no-cache-dir -r requirements.txt
+                ---> Running in 16e3087159b5
+            Collecting flask==1.1.1
+                Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+            Collecting itsdangerous>=0.24
+                Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+            Collecting Werkzeug>=0.15
+                Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+            Collecting click>=5.1
+                Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+            Collecting Jinja2>=2.10.1
+                Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+            Collecting MarkupSafe>=0.23
+                Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+            Installing collected packages: itsdangerous, Werkzeug, click, MarkupSafe, Jinja2, flask
+            Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+            Removing intermediate container 16e3087159b5
+                ---> 1c57d5e51372
+            Step 6/6 : CMD ["python", "app.py"]
+                ---> Running in 46b3873f95c1
+            Removing intermediate container 46b3873f95c1
+                ---> 3ca627a1e437
+            Successfully built 3ca627a1e437
+            Successfully tagged web-hello:latest
+
+    Запускаем контейнер с последующим удалением:
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker run --rm --name web web-hello
+            * Serving Flask app "app" (lazy loading)
+            * Environment: production
+            WARNING: This is a development server. Do not use it in a production deployment.
+            Use a production WSGI server instead.
+            * Debug mode: on
+            * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+            * Restarting with stat
+            * Debugger is active!
+            * Debugger PIN: 531-680-274
+
+    При переходе на URL "http://0.0.0.0:8080/" мы получаем ошибку "ERR_CONNECTION_REFUSED", это происходит от того что
+контейнер создаётся в полностью изолированном окружении, это косается и сетевых подключений, если мы явно не укажем,
+что конкретный порт из контейнера в какой-нибудь порт наружу, то ничего не произойдёт. Даже если в контейнере внутри
+будет работать какое-нибудь приложение, которое слушает порт какой-то, сам контейнер изолирован и мы не давали никакую
+команду пробрасывать наружу никакие порты. Поэтому мы остановим наш контейнер.
+
+    В данном случае мы остановили контейнер комбинацией клавиш "Ctrl-C". Убедимся, что никаких контейнеров в системе
+нет, т.к мы передали комманду "--rm":
+
+        ^C(WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker ps -a
+            CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+
+    Для работы нашего приложения на хостовой ОС иы добавим в Dockerfile команду:
+
+            EXPOSE 8080
+
+    Мы говорим, что хотим пробрасывать порт 8080, но эта декларация в Dockerfile она на самом деле не пробросит порт, она
+просто продикларирует, что мы хотим и можем пробросить порт 8080.
+
+    Пересобираем наш образ:
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker build -t web-hello .
+            Sending build context to Docker daemon  20.74MB
+            Step 1/7 : FROM python:3.6
+                ---> 1daf62e8cab5
+            Step 2/7 : RUN mkdir -p /usr/src/app/
+                ---> Using cache
+                ---> 6cb89215e9cd
+            Step 3/7 : WORKDIR /usr/src/app/
+                ---> Using cache
+                ---> 0b2f81f3ae24
+            Step 4/7 : COPY . /usr/src/app/
+                ---> f7a43d04629d
+            Step 5/7 : RUN pip install --no-cache-dir -r requirements.txt
+                ---> Running in cc28414b7a7f
+            Collecting flask==1.1.1
+                Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+            Collecting itsdangerous>=0.24
+                Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+            Collecting Werkzeug>=0.15
+                Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+            Collecting Jinja2>=2.10.1
+                Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+            Collecting click>=5.1
+                Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+            Collecting MarkupSafe>=0.23
+                Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+            Installing collected packages: itsdangerous, Werkzeug, MarkupSafe, Jinja2, click, flask
+            Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+            Removing intermediate container cc28414b7a7f
+                ---> 8db20254ebbf
+            Step 6/7 : EXPOSE 8080
+                ---> Running in 57c513236967
+            Removing intermediate container 57c513236967
+                ---> 01ed8410df55
+            Step 7/7 : CMD ["python", "app.py"]
+                ---> Running in 0c161b5064eb
+            Removing intermediate container 0c161b5064eb
+                ---> 853a45361ee8
+            Successfully built 853a45361ee8
+            Successfully tagged web-hello:latest
+Docker контейнера.
+    Теперь немножко модифицируем нашу команду по запуску нашего контейнера. В строку запуска контейнера добавим
+параметр "-p" и через двоеиочие указать два порта, первый, который будет на нашей машине, на машине где запускается
+Docker и через ":" порт внутри Docker контейнера.
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker run --rm --name web -p 8080:8080 web-hello
+            * Serving Flask app "app" (lazy loading)
+            * Environment: production
+            WARNING: This is a development server. Do not use it in a production deployment.
+            Use a production WSGI server instead.
+            * Debug mode: on
+            * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+            * Restarting with stat
+            * Debugger is active!
+            * Debugger PIN: 176-175-955
+
+    Теперь у нас всё работает, в браузере по адресу "http://0.0.0.0:8080/" отображается строка вида:
+
+        Hello, world! - 12.03.2020 07:53:36
+
+    Но только мы видим разницу во времени 07:53:36 в контейнере и 10:53:36 на ПЭВМ. Это происходит из-за того,
+что в контейнере установлена другая временная зона исправить это можно через переменную окружения.
+    Такая ситуация возникает часто, например нам нужно указать путь до какого-нибудь файла или указать идентификатор какого-нибудь клиента или URL к другим микросервисам, это делается через
+переменные окружения и довольно часто. Это можно сделать несколькими способами. Первый способ:
+    1. В самом Dockerfile, с помощью команды "ENV":
+
+        ENV TZ Europe/Moscow
+
+            TZ - имя переменной;
+            Europe/Moscow - значение переменой.
+
+    Собираем заново наш образ:
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker build -t web-hello .
+            Sending build context to Docker daemon  20.74MB
+            Step 1/8 : FROM python:3.6
+                ---> 1daf62e8cab5
+            Step 2/8 : RUN mkdir -p /usr/src/app/
+                ---> Using cache
+                ---> 6cb89215e9cd
+            Step 3/8 : WORKDIR /usr/src/app/
+                ---> Using cache
+                ---> 0b2f81f3ae24
+            Step 4/8 : COPY . /usr/src/app/
+                ---> Using cache
+                ---> b0c515ea9706
+            Step 5/8 : RUN pip install --no-cache-dir -r requirements.txt
+                ---> Running in a9eec1fed3c8
+            Collecting flask==1.1.1
+                Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+            Collecting Jinja2>=2.10.1
+                Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+            Collecting Werkzeug>=0.15
+                Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+            Collecting click>=5.1
+                Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+            Collecting itsdangerous>=0.24
+                Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+            Collecting MarkupSafe>=0.23
+                Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+            Installing collected packages: MarkupSafe, Jinja2, Werkzeug, click, itsdangerous, flask
+            Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+            Removing intermediate container a9eec1fed3c8
+                ---> 3f1b1fba5edb
+            Step 6/8 : EXPOSE 8080
+                ---> Running in 504843726bec
+            Removing intermediate container 504843726bec
+                ---> f9c5ba977985
+            Step 7/8 : ENV TZ Europe/Moscow
+                ---> Running in cd7664a4a530
+            Removing intermediate container cd7664a4a530
+                ---> b1580c828bd6
+            Step 8/8 : CMD ["python", "app.py"]
+                ---> Running in 19636ec3cac5
+            Removing intermediate container 19636ec3cac5
+                ---> 9502954f1619
+            Successfully built 9502954f1619
+            Successfully tagged web-hello:latest
+
+    Запускаем наш контейнер:
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker run --rm --name web -p 8080:8080 web-hello
+            * Serving Flask app "app" (lazy loading)
+            * Environment: production
+            WARNING: This is a development server. Do not use it in a production deployment.
+            Use a production WSGI server instead.
+            * Debug mode: on
+            * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+            * Restarting with stat
+            * Debugger is active!
+            * Debugger PIN: 144-945-896
+            172.17.0.1 - - [12/Mar/2020 11:24:09] "GET / HTTP/1.1" 200 -
+
+    Теперь мы видим, что время в контейнере и на ПЭВМ одинаковое.
+
+    Но существуют ситуацииЮ, когда нам надо эти переменные окружения менять, например URL к микросервисам могут менятся.
+И хотелось бы иметь механизм динамической замены переменных окружения, без внесения изменений в Docker файл и
+дальнейшей пересборки образа.

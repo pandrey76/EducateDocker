@@ -159,6 +159,222 @@ Collecting MarkupSafe&gt;=0.23
   Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
 Installing collected packages: MarkupSafe, Jinja2, itsdangerous, Werkzeug, click, flask
 Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker build -t web-hello .
+[sudo] пароль для admin1:
+Sending build context to Docker daemon  20.74MB
+Step 1/6 : FROM python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/6 : RUN mkdir -p /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 6cb89215e9cd
+Step 3/6 : WORKDIR /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 0b2f81f3ae24
+Step 4/6 : COPY . /usr/src/app/
+ ---&gt; 16d5e4eddb09
+Step 5/6 : RUN pip install --no-cache-dir -r requirements.txt
+ ---&gt; Running in c6313f82e1fb
+Removing intermediate container c6313f82e1fb
+ ---&gt; 331927c54465
+Step 6/6 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in 5d7463af03cd
+Removing intermediate container 5d7463af03cd
+ ---&gt; 72bcbfb6fa2c
+Successfully built 72bcbfb6fa2c
+Successfully tagged web-hello:latest
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+web-hello           latest              72bcbfb6fa2c        4 minutes ago       939MB
+hello-world         latest              7646c5da0c70        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              3d1be4c548b1        2 days ago          914MB
+python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker images -a
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+web-hello           latest              72bcbfb6fa2c        9 minutes ago       939MB
+&lt;none&gt;              &lt;none&gt;              331927c54465        9 minutes ago       939MB
+&lt;none&gt;              &lt;none&gt;              16d5e4eddb09        9 minutes ago       933MB
+hello-world         latest              7646c5da0c70        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              fc53ebf6c113        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              4709754f91a6        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              3d1be4c548b1        2 days ago          914MB
+&lt;none&gt;              &lt;none&gt;              fd5bce5802e1        2 days ago          914MB
+&lt;none&gt;              &lt;none&gt;              0b2f81f3ae24        2 days ago          914MB
+&lt;none&gt;              &lt;none&gt;              6cb89215e9cd        2 days ago          914MB
+python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker rmi 72bcbfb6fa2c
+Untagged: web-hello:latest
+Deleted: sha256:72bcbfb6fa2c7642fdb60fe06196b1059f973438c3a723a8f19c1b6b8bb89631
+Deleted: sha256:331927c544655e6efd9f79ddfc7e81ce31ebbc7ee2e493ccd5634d47dfe9d82e
+Deleted: sha256:5e3bf44e412deeab36903220afd9361138f15bbd5024c02939c5a18fca8cc654
+Deleted: sha256:16d5e4eddb093ca86d715d5e0ceb7b825b489038db068066b5f8fb2855a17802
+Deleted: sha256:fd87ed78b4d2c60d5ab67a55904e53bbf9e92cc0ec0631d7f59b4b3ee79a1d11
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+hello-world         latest              7646c5da0c70        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        18 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              3d1be4c548b1        2 days ago          914MB
+python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:~/work/Education/Docker/EducateDocker/Web-hel<font color="#729FCF"><b>lo-world</b></font>$ sudo docker build -t web-hello .
+Sending build context to Docker daemon  20.74MB
+Step 1/6 : FROM python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/6 : RUN mkdir -p /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 6cb89215e9cd
+Step 3/6 : WORKDIR /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 0b2f81f3ae24
+Step 4/6 : COPY . /usr/src/app/
+ ---&gt; 53854985f8db
+Step 5/6 : RUN pip install --no-cache-dir -r requirements.txt
+ ---&gt; Running in 16e3087159b5
+Collecting flask==1.1.1
+  Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+Collecting itsdangerous&gt;=0.24
+  Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting Werkzeug&gt;=0.15
+  Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+Collecting click&gt;=5.1
+  Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+Collecting Jinja2&gt;=2.10.1
+  Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+Collecting MarkupSafe&gt;=0.23
+  Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+Installing collected packages: itsdangerous, Werkzeug, click, MarkupSafe, Jinja2, flask
+Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+Removing intermediate container 16e3087159b5
+ ---&gt; 1c57d5e51372
+Step 6/6 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in 46b3873f95c1
+Removing intermediate container 46b3873f95c1
+ ---&gt; 3ca627a1e437
+Successfully built 3ca627a1e437
+Successfully tagged web-hello:latest
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker run --rm --name web web-hello
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 531-680-274
+
+^C(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker build -t web-hello .
+Sending build context to Docker daemon  20.74MB
+Step 1/7 : FROM python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/7 : RUN mkdir -p /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 6cb89215e9cd
+Step 3/7 : WORKDIR /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 0b2f81f3ae24
+Step 4/7 : COPY . /usr/src/app/
+ ---&gt; f7a43d04629d
+Step 5/7 : RUN pip install --no-cache-dir -r requirements.txt
+ ---&gt; Running in cc28414b7a7f
+Collecting flask==1.1.1
+  Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+Collecting itsdangerous&gt;=0.24
+  Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting Werkzeug&gt;=0.15
+  Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+Collecting Jinja2&gt;=2.10.1
+  Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+Collecting click&gt;=5.1
+  Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+Collecting MarkupSafe&gt;=0.23
+  Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+Installing collected packages: itsdangerous, Werkzeug, MarkupSafe, Jinja2, click, flask
+Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+Removing intermediate container cc28414b7a7f
+ ---&gt; 8db20254ebbf
+Step 6/7 : EXPOSE 8080
+ ---&gt; Running in 57c513236967
+Removing intermediate container 57c513236967
+ ---&gt; 01ed8410df55
+Step 7/7 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in 0c161b5064eb
+Removing intermediate container 0c161b5064eb
+ ---&gt; 853a45361ee8
+Successfully built 853a45361ee8
+Successfully tagged web-hello:latest
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker run --rm --name web -p 8080:8080 web-hello
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 176-175-955
+172.17.0.1 - - [12/Mar/2020 07:55:43] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
+172.17.0.1 - - [12/Mar/2020 07:55:44] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
+172.17.0.1 - - [12/Mar/2020 07:55:45] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
+^C(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND             CREATED             STATUS              PORTS               NAMES
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker build -t web-hello .
+Sending build context to Docker daemon  20.74MB
+Step 1/8 : FROM python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/8 : RUN mkdir -p /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 6cb89215e9cd
+Step 3/8 : WORKDIR /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 0b2f81f3ae24
+Step 4/8 : COPY . /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; b0c515ea9706
+Step 5/8 : RUN pip install --no-cache-dir -r requirements.txt
+ ---&gt; Running in a9eec1fed3c8
+Collecting flask==1.1.1
+  Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+Collecting Jinja2&gt;=2.10.1
+  Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+Collecting Werkzeug&gt;=0.15
+  Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+Collecting click&gt;=5.1
+  Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+Collecting itsdangerous&gt;=0.24
+  Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting MarkupSafe&gt;=0.23
+  Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+Installing collected packages: MarkupSafe, Jinja2, Werkzeug, click, itsdangerous, flask
+Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+Removing intermediate container a9eec1fed3c8
+ ---&gt; 3f1b1fba5edb
+Step 6/8 : EXPOSE 8080
+ ---&gt; Running in 504843726bec
+Removing intermediate container 504843726bec
+ ---&gt; f9c5ba977985
+Step 7/8 : ENV TZ Europe/Moscow
+ ---&gt; Running in cd7664a4a530
+Removing intermediate container cd7664a4a530
+ ---&gt; b1580c828bd6
+Step 8/8 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in 19636ec3cac5
+Removing intermediate container 19636ec3cac5
+ ---&gt; 9502954f1619
+Successfully built 9502954f1619
+Successfully tagged web-hello:latest
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker run --rm --name web -p 8080:8080 web-hello
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 144-945-896
 </pre>
 </body>
 </html>
