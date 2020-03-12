@@ -718,6 +718,119 @@ Docker и через ":" порт внутри Docker контейнера.
 
     Теперь мы видим, что время в контейнере и на ПЭВМ одинаковое.
 
-    Но существуют ситуацииЮ, когда нам надо эти переменные окружения менять, например URL к микросервисам могут менятся.
+    Но существуют ситуации, когда нам надо эти переменные окружения менять, например URL к микросервисам могут менятся.
 И хотелось бы иметь механизм динамической замены переменных окружения, без внесения изменений в Docker файл и
 дальнейшей пересборки образа.
+    Мы удалим параметр ENV из Docker файла и пересобирём образ:
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker build -t web-hello .
+            Sending build context to Docker daemon  20.74MB
+            Step 1/7 : FROM python:3.6
+                ---> 1daf62e8cab5
+            Step 2/7 : RUN mkdir -p /usr/src/app/
+                ---> Using cache
+                ---> 6cb89215e9cd
+            Step 3/7 : WORKDIR /usr/src/app/
+                ---> Using cache
+                ---> 0b2f81f3ae24
+            Step 4/7 : COPY . /usr/src/app/
+                ---> 9cf65ba15413
+            Step 5/7 : RUN pip install --no-cache-dir -r requirements.txt
+                ---> Running in 7eaf9d98c9e4
+            Collecting flask==1.1.1
+                Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+            Collecting Werkzeug>=0.15
+                Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+            Collecting Jinja2>=2.10.1
+                Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+            Collecting click>=5.1
+                Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+            Collecting itsdangerous>=0.24
+                Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+            Collecting MarkupSafe>=0.23
+                  Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+            Installing collected packages: Werkzeug, MarkupSafe, Jinja2, click, itsdangerous, flask
+            Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+            Removing intermediate container 7eaf9d98c9e4
+                ---> 08cc88bca0af
+            Step 6/7 : EXPOSE 8080
+                ---> Running in 39d61a4679ef
+            Removing intermediate container 39d61a4679ef
+                ---> c4315e78ee0c
+            Step 7/7 : CMD ["python", "app.py"]
+                ---> Running in b2f1ec4995db
+            Removing intermediate container b2f1ec4995db
+                ---> e30856fec156
+            Successfully built e30856fec156
+            Successfully tagged web-hello:latest
+
+    Теперь изменим команду для запуска контейнера и передадим в строку переменную окружения, соответствующую
+временную зону.
+
+        (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ sudo docker run --rm --name web -p 8080:8080 -e TZ=Europe/Moscow web-hello
+            * Serving Flask app "app" (lazy loading)
+            * Environment: production
+            WARNING: This is a development server. Do not use it in a production deployment.
+            Use a production WSGI server instead.
+            * Debug mode: on
+            * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+            * Restarting with stat
+            * Debugger is active!
+            * Debugger PIN: 333-723-173
+            172.17.0.1 - - [12/Mar/2020 11:46:52] "GET / HTTP/1.1" 200 -
+
+
+    И при использовании этого способа определения переменной окружения всё работает корректно,время в контейнере
+и на ПЭВМ совпадают.
+    Но существует ещё один нюанс, Docker образ для Docker контейнера, является "readonly", т.е. контейнер никак не
+может поменять образ. Но у нас же в Docker контейнере может работать какая-нибудь СУБД, которая каким-то образом данные
+сохраняет, получается, что когда контейнер остановится он затрёт за собой все данные, иногда это нужно, например чистая
+СУБД для тестов, но как правило нам нужно сохранять эти данные. Другими словами должен быть какой-нибудь механизм работы
+с какими-нибудь внешними источниками данных. У нас есть web сервис, который слушает порт, а теперь мы попробуем
+прекрутить к нему данные. Есть несколько способов.
+
+    1. Монтирование папки, делается это в команде "docker run" добавлением параметра "-v" после, которой через ":"
+указываются два абсолютных пути, первый на хостовой машине, т.е. папка, которую мы хотим прикрепить, второй,
+абсолютный путь к папке внутри контейнера.
+
+
+        sudo docker run --rm --name web -p 8080:8080 -e TZ=Europe/Moscow -v /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/resources:/usr/src/app/resources web-hello
+
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ ls
+        app.py  Dockerfile  requirements.txt  resources  WebHelloWorldEnv
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world$ cd resources
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ pwd
+        /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/resources
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ sudo docker run --rm --name web -p 8080:8080 -e TZ=Europe/Moscow -v /home/admin1/work/Education/Docker/EducateDocker/Web-hello-world/resources:/usr/src/app/resources web-hello
+        * Serving Flask app "app" (lazy loading)
+        * Environment: production
+        WARNING: This is a development server. Do not use it in a production deployment.
+        Use a production WSGI server instead.
+        * Debug mode: on
+        * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+        * Restarting with stat
+        * Debugger is active!
+        * Debugger PIN: 283-111-709
+        172.17.0.1 - - [12/Mar/2020 12:18:17] "GET / HTTP/1.1" 200 -
+
+    При запуске приложения в браузере отображается "Hello, world! - 12.03.2020 12:19:14" меняем в файле
+response.json
+    {
+        "payload": "Hello, world!"
+    }
+    на
+    {
+        "payload": "This is just string..."
+    }
+    и обновив страницу браузера получаем: "This is just string... - 12.03.2020 12:22:08".
+
+    Мы теперь имеем возможность монтировать локальные папки в Docker контейнер. И теперь останавливая наш контейнер мы
+видим, что содержимое файла response.json не поменялось:
+
+    ^C(WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$
+
+    Файл response.json:
+        {
+            "payload": "This is just string..."
+        }.
+     При этом само приложение в Docker контейнере может менять содержимое нашей премонтированной папки.

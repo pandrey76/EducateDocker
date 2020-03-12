@@ -375,6 +375,58 @@ Successfully tagged web-hello:latest
  * Restarting with stat
  * Debugger is active!
  * Debugger PIN: 144-945-896
+
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker build -t web-hello .
+Sending build context to Docker daemon  20.74MB
+Step 1/7 : FROM python:3.6
+ ---&gt; 1daf62e8cab5
+Step 2/7 : RUN mkdir -p /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 6cb89215e9cd
+Step 3/7 : WORKDIR /usr/src/app/
+ ---&gt; Using cache
+ ---&gt; 0b2f81f3ae24
+Step 4/7 : COPY . /usr/src/app/
+ ---&gt; 9cf65ba15413
+Step 5/7 : RUN pip install --no-cache-dir -r requirements.txt
+ ---&gt; Running in 7eaf9d98c9e4
+Collecting flask==1.1.1
+  Downloading Flask-1.1.1-py2.py3-none-any.whl (94 kB)
+Collecting Werkzeug&gt;=0.15
+  Downloading Werkzeug-1.0.0-py2.py3-none-any.whl (298 kB)
+Collecting Jinja2&gt;=2.10.1
+  Downloading Jinja2-2.11.1-py2.py3-none-any.whl (126 kB)
+Collecting click&gt;=5.1
+  Downloading click-7.1.1-py2.py3-none-any.whl (82 kB)
+Collecting itsdangerous&gt;=0.24
+  Downloading itsdangerous-1.1.0-py2.py3-none-any.whl (16 kB)
+Collecting MarkupSafe&gt;=0.23
+  Downloading MarkupSafe-1.1.1-cp36-cp36m-manylinux1_x86_64.whl (27 kB)
+Installing collected packages: Werkzeug, MarkupSafe, Jinja2, click, itsdangerous, flask
+Successfully installed Jinja2-2.11.1 MarkupSafe-1.1.1 Werkzeug-1.0.0 click-7.1.1 flask-1.1.1 itsdangerous-1.1.0
+Removing intermediate container 7eaf9d98c9e4
+ ---&gt; 08cc88bca0af
+Step 6/7 : EXPOSE 8080
+ ---&gt; Running in 39d61a4679ef
+Removing intermediate container 39d61a4679ef
+ ---&gt; c4315e78ee0c
+Step 7/7 : CMD [&quot;python&quot;, &quot;app.py&quot;]
+ ---&gt; Running in b2f1ec4995db
+Removing intermediate container b2f1ec4995db
+ ---&gt; e30856fec156
+Successfully built e30856fec156
+Successfully tagged web-hello:latest
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world</b></font>$ sudo docker run --rm --name web -p 8080:8080 -e TZ=Europe/Moscow web-hello
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 333-723-173
+172.17.0.1 - - [12/Mar/2020 11:46:52] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
 </pre>
 </body>
 </html>
