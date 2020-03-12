@@ -454,6 +454,24 @@ app.py  Dockerfile  requirements.txt  <font color="#729FCF"><b>resources</b></fo
  * Debugger is active!
  * Debugger PIN: 283-111-709
 172.17.0.1 - - [12/Mar/2020 12:18:17] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ sudo docker volume ls
+DRIVER              VOLUME NAME
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ sudo docker volume create web
+web
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ sudo docker volume ls
+DRIVER              VOLUME NAME
+local               web
+(WebHelloWorldEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Web-hello-world/resources</b></font>$ sudo docker run --rm --name web -p 8080:8080 -v web:/usr/src/app/resources -e TZ=Europe/Moscow web-hello
+ * Serving Flask app &quot;app&quot; (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 152-430-171
+172.17.0.1 - - [12/Mar/2020 15:10:43] &quot;<font color="#D3D7CF">GET / HTTP/1.1</font>&quot; 200 -
 </pre>
 </body>
 </html>

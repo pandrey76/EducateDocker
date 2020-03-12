@@ -17,6 +17,12 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Пробрасываем порт
 EXPOSE 8080
 
+# Определяем временную зону через переменную окружения.
+# Сейчас мы передаём данный параметр, через строку запуска контейнера
+# sudo docker run --rm --name web -p 8080:8080 -v web:/usr/src/app/resources -e TZ=Europe/Moscow web-hello
+# ENV TZ Europe/Moscow
+
+
 # Что нужно делать, когда мы запустим контейнер
 # Здесь нужно выполнить команду python app.py
 # есть разница между командами CMD и ENTRYPOINT, по сути они выполняют похожие действия, т.е.

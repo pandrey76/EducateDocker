@@ -834,3 +834,46 @@ response.json
             "payload": "This is just string..."
         }.
      При этом само приложение в Docker контейнере может менять содержимое нашей премонтированной папки.
+
+   2. Второй способ - это использование, так называемых Docker volume, по сути это надстройка над теми же папками,
+просто мы создаём Docker volume и прикрепляем его к контейнеру. Docker volume это папка, просто она хранится по
+определённому пути. Сейчас посмотрим какие Docker volume у нас уже есть:
+
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ sudo docker volume ls
+        DRIVER              VOLUME NAME
+
+    Мы видим в системе Docker volumes отсутствуют, для того чтобы их создать надо выполнить команду:
+
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ sudo docker volume create web
+        web
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ sudo docker volume ls
+        DRIVER              VOLUME NAME
+        local               web
+
+    Мы видим, что созданный нами Docker volume пустой. Теперь модифицируем нашу команду для запуска контейнера:
+
+    (WebHelloWorldEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Web-hello-world/resources$ sudo docker run --rm --name web -p 8080:8080 -v web:/usr/src/app/resources -e TZ=Europe/Moscow web-hello
+        * Serving Flask app "app" (lazy loading)
+        * Environment: production
+        WARNING: This is a development server. Do not use it in a production deployment.
+        Use a production WSGI server instead.
+        * Debug mode: on
+        * Running on http://0.0.0.0:8080/ (Press CTRL+C to quit)
+        * Restarting with stat
+        * Debugger is active!
+        * Debugger PIN: 152-430-171
+        172.17.0.1 - - [12/Mar/2020 15:10:43] "GET / HTTP/1.1" 200 -
+
+    В браузере переходим При переходе на URL "http://0.0.0.0:8080/" и видим строку.
+        Hello, world! - 12.03.2020 15:11:10
+
+    Хотя мы поменяли в нашем проекте файл response.json:  "payload": "This is just string..." у пас отображается строка
+из приложения, созданного ранее образа.
+
+    Теперь информация, которая хранится по пути "/usr/src/app/resources" все файлы хранятся в Docker volume под
+именем web. Это актуально для СУБД, т.е. мы можем указать какой-то путь где СУБД будет сохранять какие-нибудь
+информацию, и даже при остановке контейнера с информацией ничего не случится, потому что она хранится в нашем volume
+или это актуально для файловых серверов, тот же "Nx Cloud", короче Docker volume - это папка примонтированная к
+контейнеру. Мы просто указываем Volume примонтируйся вот по этому пути и всё что по этому пути в контейнере сохраняется,
+оно по сути попадает в Volume, поэтому когда мы останавливаем или удаляем контейнер с данными ничего не происходит,
+мы также можем взять этот Volume и привязать его уже к другому контейнеру.
