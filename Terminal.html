@@ -524,6 +524,35 @@ hello-world         latest              7646c5da0c70        25 hours ago        
 &lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        26 hours ago        914MB
 &lt;none&gt;              &lt;none&gt;              3d1be4c548b1        2 days ago          914MB
 python              3.6                 1daf62e8cab5        2 weeks ago         914MB
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ sudo docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+web-hello           latest              e30856fec156        26 hours ago        942MB
+&lt;none&gt;              &lt;none&gt;              9502954f1619        26 hours ago        942MB
+&lt;none&gt;              &lt;none&gt;              3ca627a1e437        27 hours ago        942MB
+hello-world         latest              7646c5da0c70        45 hours ago        914MB
+&lt;none&gt;              &lt;none&gt;              ea3e8c3f2f44        46 hours ago        914MB
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ sudo docker run --rm -d -p 27017:27017 mongo
+Unable to find image &apos;mongo:latest&apos; locally
+latest: Pulling from library/mongo
+423ae2b273f4: Pull complete
+de83a2304fa1: Pull complete
+f9a83bce3af0: Pull complete
+b6b53be908de: Pull complete
+f3cc2fb4f0eb: Pull complete
+f552d845039c: Pull complete
+ba6e166a9814: Pull complete
+dc2ba5bee263: Pull complete
+828a1244f976: Pull complete
+c63a86989a84: Pull complete
+ebc2ee27e8bb: Pull complete
+89a06e64657c: Pull complete
+1ca7a5924304: Pull complete
+Digest: sha256:a1f116a08f48359302d7b567bdccc8b047bb0e534044de91be908c39eb796707
+Status: Downloaded newer image for mongo:latest
+f9bdd5eb0cf3756e7a6a3be4410d1909e9cbb816d9719f4aeebdd940291a346b
+(DockerMongoExampleEnv) <font color="#8AE234"><b>admin1@ubuntu18</b></font>:<font color="#729FCF"><b>~/work/Education/Docker/EducateDocker/Docker-mongo-example</b></font>$ sudo docker ps -a
+CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS                      NAMES
+f9bdd5eb0cf3        mongo               &quot;docker-entrypoint.s…&quot;   2 hours ago         Up 2 hours          0.0.0.0:27017-&gt;27017/tcp   vigilant_panini
 </pre>
 </body>
 </html>

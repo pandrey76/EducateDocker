@@ -929,9 +929,145 @@ response.json
 
         Добавляем приложение "Docker-mongo-example".
 
-        Теперь запускаем контейнер с Mongo, временный который нужен только для тестирования. MongoClient поднимается на
+    Теперь запускаем контейнер с Mongo, временный который нужен только для тестирования. MongoClient поднимается на
 localhost на порту 27017.
 
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ sudo docker images
+        REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+        web-hello           latest              e30856fec156        26 hours ago        942MB
+        <none>              <none>              9502954f1619        26 hours ago        942MB
+        <none>              <none>              3ca627a1e437        27 hours ago        942MB
+        hello-world         latest              7646c5da0c70        45 hours ago        914MB
+        <none>              <none>              ea3e8c3f2f44        46 hours ago        914MB
+
+    Мы видим, что у нас нет образа с Mongo, но мы не будем его загружать с Docker hub, а просто запустим наш контейнер.
+
+    (DockerMongoExampleEnv) admin1@ubuntu18:~/work/Education/Docker/EducateDocker/Docker-mongo-example$ sudo docker run --rm -d -p 27017:27017 mongo
+        Unable to find image 'mongo:latest' locally
+        latest: Pulling from library/mongo
+        423ae2b273f4: Pull complete
+        de83a2304fa1: Pull complete
+        f9a83bce3af0: Pull complete
+        b6b53be908de: Pull complete
+        f3cc2fb4f0eb: Pull complete
+        f552d845039c: Pull complete
+        ba6e166a9814: Pull complete
+        dc2ba5bee263: Pull complete
+        828a1244f976: Pull complete
+        c63a86989a84: Pull complete
+        ebc2ee27e8bb: Pull complete
+        89a06e64657c: Pull complete
+        1ca7a5924304: Pull complete
+        Digest: sha256:a1f116a08f48359302d7b567bdccc8b047bb0e534044de91be908c39eb796707
+        Status: Downloaded newer image fo                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 r mongo:latest
+        f9bdd5eb0cf3756e7a6a3be4410d1909e9cbb816d9719f4aeebdd940291a346b
+
+    Он нам говорит, что локально Mongo не нашлась, но она есть в Docker hub. Мы видим, что образ Mongo у нас скачался
+и запустился. Теперь запускаем наше приложение.
+
+************************************************************************************************************************
+    Файл app.py:
+************************************************************************************************************************
+
+from uuid import uuid4
+import importlib
+module_name = 'storage'
+my_module = importlib.import_module(module_name)
+
+# Создаётся объект класса MongodbService,
+# у этого класса есть всего два метода get_data, save_data.
+# Почему, то данный код не работает
+# storage1 = my_module.MongodbService.get_instance()
 
 
+storage1 = my_module.MongodbService()
+
+#  В цикле записываются 5 объектов, объекты простые у них есть два поля.
+# Туда записывается UUID версии 4.
+for _ in range(5):
+    dto = {
+        "_id": str(uuid4()),
+        "payload": str(uuid4())
+    }
+    storage1.save_data(dto)
+
+# Выводится вся информация, которая там есть
+for data in storage1.get_data():
+    print(data)
+
+************************************************************************************************************************
+
+************************************************************************************************************************
+    Файл storage.py
+************************************************************************************************************************
+
+from pymongo import MongoClient
+
+
+class MongodbService(object):
+    _instance = None
+    _client = None
+    _db = None
+
+    @classmethod
+    def get_instance(cls, *args, **kwargs):
+        if cls._instance is None:
+            cls._instance = super().__init__(cls, *args, **kwargs)
+        return cls._instance
+
+# Поднимаем локального клиента, на порту 27017
+    def __init__(self):
+        self._client = MongoClient("localhost", 27017)
+        self._db = self._client.youtube_db
+
+# Возвращает все записи, которые есть в СУБД (Mongo)
+    def get_data(self):
+        return list(self._db.statistics.find())
+
+# Берётся объект и сохраняется в Mongo
+    def save_data(self, dto):
+        return self._db.statistics.insert_one(dto)
+
+************************************************************************************************************************
+
+В консоли видим следующее:
+
+/usr/bin/python3.6 /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/app.py
+{'_id': '7d427741-eb23-45d2-be08-e711af0fd5d1', 'payload': '99148e0c-b1be-4859-ba69-bef5da1959a0'}
+{'_id': 'c90458e6-1e27-4b55-b07e-0a484abc6a22', 'payload': '53096564-fde6-4ea7-a4d7-0af5e275fd33'}
+{'_id': 'da554bc7-9e4d-4f5e-a76a-3f18a0f02dab', 'payload': '8324016d-acc5-421c-be2d-ec5982447da5'}
+{'_id': 'bd6c8f37-8fad-4ae5-83fa-507aa334ec8d', 'payload': '363fe671-b2dd-4cd7-9adf-c89c2b915e79'}
+{'_id': '96c6638e-105c-4667-b8d1-1634425231ee', 'payload': 'b245e2b2-1961-492d-a1ea-4c4bd40bf24e'}
+
+После второго запуска:
+
+/usr/bin/python3.6 /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/app.py
+{'_id': '7d427741-eb23-45d2-be08-e711af0fd5d1', 'payload': '99148e0c-b1be-4859-ba69-bef5da1959a0'}
+{'_id': 'c90458e6-1e27-4b55-b07e-0a484abc6a22', 'payload': '53096564-fde6-4ea7-a4d7-0af5e275fd33'}
+{'_id': 'da554bc7-9e4d-4f5e-a76a-3f18a0f02dab', 'payload': '8324016d-acc5-421c-be2d-ec5982447da5'}
+{'_id': 'bd6c8f37-8fad-4ae5-83fa-507aa334ec8d', 'payload': '363fe671-b2dd-4cd7-9adf-c89c2b915e79'}
+{'_id': '96c6638e-105c-4667-b8d1-1634425231ee', 'payload': 'b245e2b2-1961-492d-a1ea-4c4bd40bf24e'}
+{'_id': 'ce120177-f4ba-41b3-9d1d-77c1762769f4', 'payload': '6d355025-7bb4-49cb-887c-b7e5887bec39'}
+{'_id': '66d4b13d-6e8c-4480-b014-a7da8a1271d3', 'payload': '04ac247f-d1d4-4e4c-94ad-490afcae33f6'}
+{'_id': '179e9685-18b7-4bbe-a111-6e1bde0fc38e', 'payload': '070e90ad-bce8-4017-a01e-bf6da7c05ae8'}
+{'_id': '3aefc025-c1a3-4e95-9c75-26a7bce88f41', 'payload': '110c59d7-deef-4c88-820e-b9a351de6f50'}
+{'_id': '4e9d3774-f739-46f5-94f9-23edb59c8eb0', 'payload': '5cf80b1e-ee0b-496e-a9b9-4cdb4e642eaa'}
+
+После третьего запуска:
+/usr/bin/python3.6 /home/admin1/work/Education/Docker/EducateDocker/Docker-mongo-example/app.py
+{'_id': '7d427741-eb23-45d2-be08-e711af0fd5d1', 'payload': '99148e0c-b1be-4859-ba69-bef5da1959a0'}
+{'_id': 'c90458e6-1e27-4b55-b07e-0a484abc6a22', 'payload': '53096564-fde6-4ea7-a4d7-0af5e275fd33'}
+{'_id': 'da554bc7-9e4d-4f5e-a76a-3f18a0f02dab', 'payload': '8324016d-acc5-421c-be2d-ec5982447da5'}
+{'_id': 'bd6c8f37-8fad-4ae5-83fa-507aa334ec8d', 'payload': '363fe671-b2dd-4cd7-9adf-c89c2b915e79'}
+{'_id': '96c6638e-105c-4667-b8d1-1634425231ee', 'payload': 'b245e2b2-1961-492d-a1ea-4c4bd40bf24e'}
+{'_id': 'ce120177-f4ba-41b3-9d1d-77c1762769f4', 'payload': '6d355025-7bb4-49cb-887c-b7e5887bec39'}
+{'_id': '66d4b13d-6e8c-4480-b014-a7da8a1271d3', 'payload': '04ac247f-d1d4-4e4c-94ad-490afcae33f6'}
+{'_id': '179e9685-18b7-4bbe-a111-6e1bde0fc38e', 'payload': '070e90ad-bce8-4017-a01e-bf6da7c05ae8'}
+{'_id': '3aefc025-c1a3-4e95-9c75-26a7bce88f41', 'payload': '110c59d7-deef-4c88-820e-b9a351de6f50'}
+{'_id': '4e9d3774-f739-46f5-94f9-23edb59c8eb0', 'payload': '5cf80b1e-ee0b-496e-a9b9-4cdb4e642eaa'}
+{'_id': '4f7be20c-b05c-46ad-be85-f4a8d91b55f9', 'payload': '3e14df2d-3ad2-4f78-86cd-b07b8f50bbc6'}
+{'_id': 'ef2d82bf-1f00-4431-a7b8-d87539737566', 'payload': 'bb6fc067-ad18-4096-91be-694dafe5e27a'}
+{'_id': '59e39e62-c547-4ae8-8469-26b287c33568', 'payload': '66ced699-2f5b-4df3-b69d-16f0f324db12'}
+{'_id': '2bb7609d-0f7b-4039-8dbc-9642adf12950', 'payload': '306ab209-896b-4fb6-b2a6-c04bbfd0a3d7'}
+{'_id': '25aa479d-072d-4ce3-929c-3f220bd07eb6', 'payload': '80013827-206d-4c59-8032-57286d8e188b'}
 
